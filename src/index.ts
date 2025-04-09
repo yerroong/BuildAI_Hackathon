@@ -53,11 +53,12 @@ app.post('/upload', upload.single('file'), async (req: MulterRequest, res: Respo
   }
 });
 
+// src/index.ts (일부)
 app.post('/chat', async (req: Request, res: Response): Promise<void> => {
   try {
     const { message } = req.body;
     if (!message) {
-      res.status(400).send("Missing message.");
+      res.status(400).json({ error: "Missing message." });
       return;
     }
     console.log(`Received chat message: ${message}`);
@@ -66,7 +67,7 @@ app.post('/chat', async (req: Request, res: Response): Promise<void> => {
     res.status(200).json({ answer, chatHistory: chatHandler.getChatHistory() });
   } catch (error) {
     console.error("Error in /chat:", error);
-    res.status(500).send("Error processing chat message.");
+    res.status(500).json({ error: "Error processing chat message." });
   }
 });
 
