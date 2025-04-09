@@ -1,3 +1,4 @@
+// src/chatHandler.ts
 import { UpstageClient, ChatMessage } from "./upstageClient";
 import { VectorStore } from "./vectorStore";
 
@@ -27,6 +28,10 @@ export class ChatHandler {
       .join("\n");
   }
 
+  /**
+   * 사용자 입력에 대해 관련 청크를 검색하고, 시스템 프롬프트와 이전 대화 기록을 포함하여
+   * Upstage API에 메시지를 보내고 답변을 생성합니다.
+   */
   public async processChat(userInput: string): Promise<string> {
     const relevantChunks = this.vectorStore.retrieve(userInput, 2);
     const context = relevantChunks.map(chunk => chunk.content).join("\n---\n");

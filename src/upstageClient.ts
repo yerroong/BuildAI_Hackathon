@@ -2,7 +2,7 @@
 import fetch from 'node-fetch';
 
 const UPSTAGE_API_KEY = process.env.UPSTAGE_API_KEY || 'up_kBlLWIsGhflmhoRr4tTHAjDqfx9tk';
-const UPSTAGE_BASE_URL = "https://api.upstage.ai/v1";
+const UPSTAGE_BASE_URL = "https://api.upstage.ai/v1"; // 실제 엔드포인트는 문서 확인
 
 export interface ChatMessage {
   role: "user" | "assistant" | "system";
@@ -23,7 +23,7 @@ export class UpstageClient {
   }
 
   /**
-   * Upstage의 Solar Chat API에 메시지 배열을 보내고 응답 문자열을 반환합니다.
+   * Upstage Solar Chat API에 메시지 배열을 보내고 응답 문자열을 반환합니다.
    */
   public async sendChatMessage(messages: ChatMessage[]): Promise<string> {
     const endpoint = `${this.baseUrl}/solar/chat`;

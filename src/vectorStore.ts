@@ -1,3 +1,5 @@
+// src/vectorStore.ts
+
 export interface DocumentChunk {
     id: string;
     content: string;
@@ -14,6 +16,9 @@ export interface DocumentChunk {
       this.chunks.push(...chunks);
     }
   
+    /**
+     * 질의 문자열과 일치하는 청크를 상위 topK개 반환합니다.
+     */
     public retrieve(query: string, topK: number = 2): DocumentChunk[] {
       const lowerQuery = query.toLowerCase();
       const scored = this.chunks.map(chunk => {
@@ -27,4 +32,4 @@ export interface DocumentChunk {
     public getAllChunks(): DocumentChunk[] {
       return this.chunks;
     }
-  }  
+  }
