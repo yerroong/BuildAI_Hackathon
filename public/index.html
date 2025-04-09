@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Upstage Chatbot</title>
+</head>
+<body>
+  <h1>Upstage Chatbot</h1>
+  <form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".pdf" />
+    <button type="submit">Upload PDF</button>
+  </form>
+  <hr>
+  <div>
+    <h2>Chat</h2>
+    <div id="chatBox" style="border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 10px;"></div>
+    <input type="text" id="chatInput" placeholder="Type your question here..." style="width: 80%;" />
+    <button id="sendBtn">Send</button>
+  </div>
+  <script>
+    const uploadForm = document.getElementById("uploadForm");
+    uploadForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(uploadForm);
+      const response = await fetch("/upload", {
+        method: "POST",
+        body: formData
+      });
+      const text = await response.text();
+      alert(text);
+    });
+
+    const chatBox = document.getElementById("chatBox");
+    const chatInput = document.getElementById("chatInput");
+    const sendBtn = document.getElementById("sendBtn");
+    sendBtn.addEventListener("click", async () => {
+      const message = chatInput.value;
+      if (!message) return;
+      appendMessage("User", message);
+      const response = await fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message })
+      });
+      const data = await response.json();
+      appendMessage("Bot", data.answer);
+      chatInput.value = "";
+    });
+
+    function appendMessage(sender, text) {
+      const p = document.createElement("p");
+      p.innerHTML = "<strong>" + sender + ":</strong> " + text;
+      chatBox.appendChild(p);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
+</body>
+</html>
