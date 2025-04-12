@@ -1,90 +1,99 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useRef, useEffect } from "react"
-import { Send } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { ScrollArea } from "@/components/ui/scroll-area"
+import { useState, useRef, useEffect } from "react";
+import { Send } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface Message {
-  id: number
-  content: string
-  sender: "user" | "agent"
+  id: number;
+  content: string;
+  sender: "user" | "agent";
 }
 
 export function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      content: "Hello! I'm the HackDoc Agent. Ask me anything about your document.",
+      content:
+        "Hello! I'm the HackDoc Agent. Ask me anything about your document.",
       sender: "agent",
     },
-  ])
-  const [input, setInput] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
+  ]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
-    scrollToBottom()
-  }, [messages])
+    scrollToBottom();
+  }, [messages]);
 
   const handleSendMessage = () => {
-    if (!input.trim()) return
+    if (!input.trim()) return;
 
     // Add user message
     const userMessage: Message = {
       id: messages.length + 1,
       content: input,
       sender: "user",
-    }
-    setMessages((prev) => [...prev, userMessage])
-    setInput("")
-    setIsLoading(true)
+    };
+    setMessages((prev) => [...prev, userMessage]);
+    setInput("");
+    setIsLoading(true);
 
     // Simulate agent response
     setTimeout(() => {
-      let response = ""
+      let response = "";
       if (input.toLowerCase().includes("login page")) {
         response =
-          "Based on your document, I can help create a login page with social authentication and wallet-free login. Would you like me to generate some code for that?"
+          "Based on your document, I can help create a login page with social authentication and wallet-free login. Would you like me to generate some code for that?";
       } else if (input.toLowerCase().includes("architecture")) {
         response =
-          "The architecture outlined in your document uses React for the frontend, Solidity smart contracts on Polygon for the backend, IPFS for decentralized storage, and The Graph for indexing. It follows a typical Web3 pattern with client-side wallet integration."
+          "The architecture outlined in your document uses React for the frontend, Solidity smart contracts on Polygon for the backend, IPFS for decentralized storage, and The Graph for indexing. It follows a typical Web3 pattern with client-side wallet integration.";
       } else {
-        response = "I've analyzed your document and can help with that. What specific details would you like to know?"
+        response =
+          "I've analyzed your document and can help with that. What specific details would you like to know?";
       }
 
       const agentMessage: Message = {
         id: messages.length + 2,
         content: response,
         sender: "agent",
-      }
-      setMessages((prev) => [...prev, agentMessage])
-      setIsLoading(false)
-    }, 1500)
-  }
+      };
+      setMessages((prev) => [...prev, agentMessage]);
+      setIsLoading(false);
+    }, 1500);
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault()
-      handleSendMessage()
+      e.preventDefault();
+      handleSendMessage();
     }
-  }
+  };
 
   return (
     <Card className="w-full max-w-3xl mx-auto p-4 shadow-md border-gray-200 dark:bg-zinc-900 dark:border-gray-700">
-      <h3 className="text-lg font-semibold mb-4 text-purple-800 dark:text-purple-400">🤖 Chat with HackDoc Agent</h3>
+      <h3 className="text-lg font-semibold mb-4 text-purple-800 dark:text-purple-400">
+        🤖 Chat with HackDoc Agent
+      </h3>
       <ScrollArea className="h-[300px] mb-4 pr-4">
         <div className="space-y-4">
           {messages.map((message) => (
-            <div key={message.id} className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}>
+            <div
+              key={message.id}
+              className={`flex ${
+                message.sender === "user" ? "justify-end" : "justify-start"
+              }`}
+            >
               <div
                 className={`max-w-[80%] rounded-lg px-4 py-2 ${
                   message.sender === "user"
@@ -129,5 +138,5 @@ export function ChatInterface() {
         </Button>
       </div>
     </Card>
-  )
+  );
 }
