@@ -1,7 +1,8 @@
 # HackDoc
 **build ai hackathon 2025**
+([Pitch Deck](https://docs.google.com/presentation/d/1sHUXiuc_Hk1PehybmVWajDMGRdt-xrYR7U_G-QbbV1o/edit?slide=id.g34b59c93e4c_0_83#slide=id.g34b59c93e4c_0_83)) | ([Demo](https://youtu.be/_J9Dh1Y7Tc4)) 
 
-### overview
+### Overview
 HackDoc is an **intelligent assistant** that helps users understand complex documents by **analyzing**, **summarizing**, and **extracting** key development-related insights. When a user uploads a product specification, planning document, or technical brief, the system leverages the **Upstage API** to parse its structure and extract important entities such as features, tech stacks, and deadlines. An AI Agent then reorganizes these insights into a developer-friendly format, enabling teams to save time, align quickly, and take meaningful action. 
 
 
@@ -31,6 +32,6 @@ No coding required—just upload a document.
  The platform handles everything from parsing to generating developer-ready insights.
  → Ideal for product managers, designers, and researchers.
  
-### structure
+### Structure
 <img width="452" alt="image" src="https://github.com/user-attachments/assets/3965776b-4ab4-427c-af20-28f19de8e29e" />
 
