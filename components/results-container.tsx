@@ -90,7 +90,7 @@ export function ResultsContainer({ results, fileName, onReset }: ResultsContaine
           onClick={onReset}
           className="border-purple-800 text-purple-800 hover:bg-purple-50 dark:border-purple-500 dark:text-purple-400 dark:hover:bg-purple-900/20"
         >
-          <ArrowLeft className="h-4 w-4 mr-2" />🔁 Upload Another Document
+          <ArrowLeft className="h-4 w-4 mr-2" />Upload Another Document
         </Button>
       </div>
 
