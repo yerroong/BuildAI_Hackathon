@@ -3,15 +3,15 @@
 import type React from "react"
 
 import { useState } from "react"
-import { UploadIcon, FileText } from "lucide-react"
+import { UploadIcon, FileText, Loader2, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { ResultsContainer } from "@/components/results-container"
+import { Results } from "@/components/results"
 import { ChatInterface } from "@/components/chat-interface"
+import { WalletSection } from "@/components/wallet-section"
 import { useToast } from "@/components/ui/use-toast"
-import { LoadingState } from "@/components/loading-state"
 
-export function DocumentUploader() {
+export function Upload() {
   const [file, setFile] = useState<File | null>(null)
   const [isDragging, setIsDragging] = useState(false)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
@@ -105,53 +105,67 @@ export function DocumentUploader() {
   if (results) {
     return (
       <div className="space-y-8">
-        <ResultsContainer results={results} fileName={file?.name} onReset={resetUpload} />
+        <Results results={results} fileName={file?.name} onReset={resetUpload} />
         <ChatInterface />
+        <WalletSection />
       </div>
     )
   }
 
-  if (isAnalyzing) {
-    return <LoadingState fileName={file?.name} onReset={resetUpload} />
-  }
-
   return (
     <div className="flex flex-col items-center">
-      <Card
-        className={`w-full max-w-2xl p-8 border-2 border-dashed transition-colors shadow-md dark:bg-zinc-900 dark:border-gray-700 ${
-          isDragging
-            ? "border-purple-800 dark:border-purple-500 bg-purple-50 dark:bg-purple-900/20"
-            : "border-gray-300 dark:border-gray-600"
-        }`}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-      >
-        <div className="flex flex-col items-center text-center">
-          <div className="h-20 w-20 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mb-4">
-            <UploadIcon className="h-10 w-10 text-purple-800 dark:text-purple-400" />
+      {isAnalyzing ? (
+        <Card className="w-full max-w-2xl p-8 flex flex-col items-center justify-center text-center shadow-md dark:bg-gray-800 dark:border-gray-700">
+          <Button
+            variant="outline"
+            size="sm"
+            className="self-start mb-4 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600"
+            onClick={resetUpload}
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back
+          </Button>
+          <Loader2 className="h-12 w-12 text-purple-800 dark:text-purple-400 animate-spin mb-4" />
+          <h2 className="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-100">Analyzing your document...</h2>
+          <p className="text-gray-600 dark:text-gray-400">Our AI is extracting insights from {file?.name}</p>
+        </Card>
+      ) : (
+        <Card
+          className={`w-full max-w-2xl p-8 border-2 border-dashed transition-colors shadow-md dark:bg-gray-800 dark:border-gray-700 ${
+            isDragging
+              ? "border-purple-800 dark:border-purple-500 bg-purple-50 dark:bg-purple-900/20"
+              : "border-gray-300 dark:border-gray-600"
+          }`}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+        >
+          <div className="flex flex-col items-center text-center">
+            <div className="h-20 w-20 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mb-4">
+              <UploadIcon className="h-10 w-10 text-purple-800 dark:text-purple-400" />
+            </div>
+            <h2 className="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-100">Upload your document</h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">Drag and drop your file here, or click to browse</p>
+            <div className="flex flex-col items-center gap-4">
+              <Button
+                className="bg-purple-800 hover:bg-purple-900 text-white dark:bg-purple-700 dark:hover:bg-purple-800"
+                onClick={() => document.getElementById("file-upload")?.click()}
+              >
+                <FileText className="mr-2 h-4 w-4" />
+                Upload Document
+              </Button>
+              <input
+                id="file-upload"
+                type="file"
+                className="hidden"
+                accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain"
+                onChange={handleFileChange}
+              />
+              <p className="text-sm text-gray-500 dark:text-gray-500">Supported formats: PDF, DOCX, TXT</p>
+            </div>
           </div>
-          <h2 className="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-100">Upload your document</h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">Drag and drop your file here, or click to browse</p>
-          <div className="flex flex-col items-center gap-4">
-            <Button
-              className="bg-purple-800 hover:bg-purple-900 text-white dark:bg-purple-700 dark:hover:bg-purple-800"
-              onClick={() => document.getElementById("file-upload")?.click()}
-            >
-              <FileText className="mr-2 h-4 w-4" />
-              Upload Document
-            </Button>
-            <input
-              id="file-upload"
-              type="file"
-              className="hidden"
-              accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain"
-              onChange={handleFileChange}
-            />
-            <p className="text-sm text-gray-500 dark:text-gray-500">Supported formats: PDF, DOCX, TXT</p>
-          </div>
-        </div>
-      </Card>
+        </Card>
+      )}
     </div>
   )
 }
